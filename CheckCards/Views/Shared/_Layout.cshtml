@@ -16,7 +16,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -25,16 +25,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Register">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item float-right">
+                            <a id="login" href="#" class="nav-link text-dark hide-loggedin" data-toggle="modal" data-target="#modalLogin">Log In</a>
+                        </li>
+                        <li class="nav-item float-right">
+                            <a id="signout" href="#" class="nav-link text-dark show-loggedin">Sign Out</a>
                         </li>
                         <li class="nav-item">
                             <a id="register" asp-controller="Home" asp-action="Register" class="nav-link text-dark hide-loggedin">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="login" href="#" class="nav-link text-dark hide-loggedin" data-toggle="modal" data-target="#modalLogin">Log In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="signout" href="#" class="nav-link text-dark show-loggedin">Sign Out</a>
                         </li>
                     </ul>
                 </div>

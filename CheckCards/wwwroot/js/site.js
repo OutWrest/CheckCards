@@ -117,8 +117,8 @@ document.getElementById("confirmTwoFactorButton").addEventListener("click", e =>
     var username = document.getElementById("loginUsername").value;
     var password = document.getElementById("loginPassword").value;
     var code = document.getElementById('loginTwoFactorValue').value;
-    data = { 'username': username, 'password': password, 'SecondFactorValue': code };
-    myFetch('/api/v0.999/SecondFactor', 'POST', false, data)
+    data = { 'username': username, 'password': password, 'MultiFactorValue': code };
+    myFetch('/api/v0.999/MultiFactor', 'POST', false, data)
         .then(response => {
             if (response.ok) {
 

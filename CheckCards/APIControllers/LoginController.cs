@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CheckCards.Data;
 using CheckCards.Models.ViewModels;
+using CheckCards.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,15 @@ namespace CheckCards.APIControllers
     {
         private SignInManager<ApplicationUser> signInManager;
         private UserManager<ApplicationUser> userManager;
+        private IAServices AServices;
 
         private static string Failed = "Login Failed.";
 
-        public LoginController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public LoginController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IAServices AServices)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.AServices = AServices;
         }
 
         [HttpPost]
@@ -37,6 +40,7 @@ namespace CheckCards.APIControllers
                 var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                 if (result.Succeeded)
                 {
+                    await AServices.SendTwoFactorCodeAsync(user);
                     return new OkResult();
                 }
             }

@@ -39,11 +39,9 @@ namespace CheckCards.Data
 
             ApplicationUser user = new ApplicationUser
             {
-                UserName = "asd",
+                UserName = "target",
                 Name = "name",
-                Email = "user@aol.com",
-                Answer1 = "a",
-                Answer2 = "a"
+                Email = "target@aol.com"
             };
 
             Tasks.Add(userManager.CreateAsync(user, "asd").ContinueWith(task =>

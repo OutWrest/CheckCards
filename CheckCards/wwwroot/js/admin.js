@@ -1,4 +1,26 @@
-﻿document.getElementById("registerButton").addEventListener("click", e => {
+window.addEventListener('load', function () {
+
+    myFetch('/api/v0.999/Admin', 'GET', true, data)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status)
+            }
+            return response
+        })
+        .then(data => {
+            alert('yas');
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error);
+            registerStatus.innerText = "Failed to gather users";
+            document.location.href = "#";
+        });
+})
+
+
+
+document.getElementById("registerButton").addEventListener("click", e => {
     var registerStatus = document.getElementById('registerStatus');
     registerStatus.innerText = "";
     var name = document.getElementById("Name").value.trim();

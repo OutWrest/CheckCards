@@ -9,7 +9,6 @@ using CheckCards.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CheckCards.APIControllers
 {
@@ -23,7 +22,6 @@ namespace CheckCards.APIControllers
 
         private const string Failed = "Operation failed";
         private const string Succeeded = "Operation successful";
-
 
         public RegisterController(
             SignInManager<ApplicationUser> signInManager,
@@ -61,12 +59,12 @@ namespace CheckCards.APIControllers
         {
             ResponseStatusViewModel res = new ResponseStatusViewModel();
 
-            if (CheckResult(model.Name, model.Username, model.Email, model.Password))
+            if (!CheckResult(model.Name, model.Username, model.Email, model.Password))
             {
                 res.Result = false;
                 res.Message = Failed;
 
-                return res;
+                return new BadRequestObjectResult(res);
             }
 
             ApplicationUser user = new ApplicationUser()
@@ -74,6 +72,7 @@ namespace CheckCards.APIControllers
                 Name = model.Name,
                 Email = model.Email,
                 UserName = model.Username,
+                TwoFactorEnabled = true
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
@@ -83,10 +82,10 @@ namespace CheckCards.APIControllers
                 res.Result = false;
                 res.Message = Failed;
 
-                return res;
+                return new BadRequestObjectResult(res);
             }
 
-            await userManager.AddToRoleAsync(user, AuthorizationRoles.User);
+            await userManager.AddToRoleAsync(user, AuthorizationRoles.Administrator);
 
             res.Result = true;
             res.Message = Succeeded;

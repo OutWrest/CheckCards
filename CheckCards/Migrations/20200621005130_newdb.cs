@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CheckCards.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,13 +41,9 @@ namespace CheckCards.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    Question1 = table.Column<string>(nullable: true),
-                    Question2 = table.Column<string>(nullable: true),
-                    Answer1 = table.Column<string>(nullable: true),
-                    Answer2 = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    CQVerified = table.Column<bool>(nullable: true),
-                    TFVerified = table.Column<bool>(nullable: true)
+                    TwoFactorCode = table.Column<string>(nullable: true),
+                    TwoFactorCodeDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

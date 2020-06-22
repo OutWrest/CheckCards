@@ -218,26 +218,14 @@ namespace CheckCards.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Answer1")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Answer2")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("CQVerified")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Question1")
+                    b.Property<string>("TwoFactorCode")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Question2")
+                    b.Property<DateTime>("TwoFactorCodeDateTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("TFVerified")
-                        .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
