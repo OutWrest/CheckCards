@@ -48,5 +48,14 @@ namespace CheckCards.Services
             }
             return false;
         }
+
+        public async Task SendPasswordResetAsync(ApplicationUser user)
+        {
+            string guid = Guid.NewGuid().ToString();
+            user.PasswordResetCode = guid;
+            user.PasswordResetCodeDateTime = DateTime.Now;
+            await userManager.UpdateAsync(user);
+            emailService.EmailPasswordResetCode(user);
+        }
     }
 }

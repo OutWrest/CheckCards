@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Reset Password";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>@ViewData["id"]</div>
+
+<div class="text-danger" id="passwordStatus"></div>
+<div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" placeholder="Enter your password" id="password" />
+</div>
+<div class="form-group">
+    <label for="password">Confirm Password:</label>
+    <input type="password" class="form-control" placeholder="Confirm your password" id="confirmPassword" />
+</div>
+<button id="passwordButton" type="submit" class="btn btn-primary"><div id="passwordSpinner" class="spinner-border text-primary d-none"></div>ResetPassword</button>
+
+
+<script src="~/js/resetpassword.js"></script>

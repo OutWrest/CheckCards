@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CheckCards.Migrations
 {
-    public partial class newdb : Migration
+    public partial class fpprocess : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,9 @@ namespace CheckCards.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     TwoFactorCode = table.Column<string>(nullable: true),
-                    TwoFactorCodeDateTime = table.Column<DateTime>(nullable: true)
+                    TwoFactorCodeDateTime = table.Column<DateTime>(nullable: true),
+                    PasswordResetCode = table.Column<string>(nullable: true),
+                    PasswordResetCodeDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

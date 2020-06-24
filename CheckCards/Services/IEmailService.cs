@@ -6,5 +6,6 @@ namespace CheckCards.Services
     public interface IEmailService : IEmailSender
     {
         public void EmailTwoFactorCode(ApplicationUser user);
+        public void EmailPasswordResetCode(ApplicationUser user);
     }
 }

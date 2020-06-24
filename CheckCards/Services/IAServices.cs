@@ -7,5 +7,6 @@ namespace CheckCards.Services
     {
         public Task SendTwoFactorCodeAsync(ApplicationUser user);
         public bool ValidateTwoFactorCodeAsync(ApplicationUser user, string code);
+        public Task SendPasswordResetAsync(ApplicationUser user);
     }
 }

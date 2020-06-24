@@ -41,7 +41,8 @@ namespace CheckCards.Data
             {
                 UserName = "target",
                 Name = "name",
-                Email = "target@aol.com"
+                Email = "target@aol.com",
+                PasswordResetCode = "5959"
             };
 
             Tasks.Add(userManager.CreateAsync(user, "asd").ContinueWith(task =>

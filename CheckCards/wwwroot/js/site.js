@@ -145,3 +145,87 @@ document.getElementById("confirmTwoFactorButton").addEventListener("click", e =>
             enableLoginSpinner(false);
         });
 });
+
+// Forgot password
+
+$("#login-forgotpassword").click(function () {
+    $("#modalLogin").modal('hide');
+    $("#modalForgotPassword").modal('show');
+});
+
+document.getElementById("resetPasswordButton").addEventListener("click", e => {
+    document.getElementById('resetPasswordStatus').innerText = "";
+    enableLoginSpinner(true);
+    var email    = document.getElementById("resetPasswordEmail").value;
+    var username = document.getElementById("resetPasswordUsername").value;
+    var name     = document.getElementById("resetPasswordName").value;
+    data = { 'email': email, 'username': username, 'name': name };
+    myFetch('/api/v0.999/ForgotPassword', 'POST', false, data)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+                //return response.json();
+            }
+        })
+        .then(data => {
+            //sessionStorage.setItem('jwt', data.token);            
+            //document.location.href = '/';
+            //isLoggedIn();
+            //$('#modalLogin').modal('hide');
+            document.getElementById('loginButton').classList.add('d-none');
+            document.getElementById('confirmTwoFactorButton').classList.remove('d-none');
+            document.getElementById('loginUsernamePasswordContainer').classList.add('d-none');
+            document.getElementById('loginTwoFactorFormGroup').classList.remove('d-none');
+            enableLoginSpinner(false);
+        })
+        .catch(error => {
+            console.log(error);
+            document.getElementById('resetPasswordStatus').innerText = "Password Reset Failed";
+            enableLoginSpinner(false);
+        });
+});
+
+document.getElementById("confirmTwoFactorButton").addEventListener("click", e => {
+    document.getElementById('loginStatus').innerText = "";
+    enableLoginSpinner(true);
+    var username = document.getElementById("loginUsername").value;
+    var password = document.getElementById("loginPassword").value;
+    var code = document.getElementById('loginTwoFactorValue').value;
+    data = { 'username': username, 'password': password, 'MultiFactorValue': code };
+    myFetch('/api/v0.999/MultiFactor', 'POST', false, data)
+        .then(response => {
+            if (response.ok) {
+
+                return response.json();
+            }
+            else
+                enableLoginSpinner(false);
+            throw new Error(response.status);
+        })
+        .then(data => {
+            sessionStorage.setItem('jwt', data.token);
+            document.location.href = '/';
+            isLoggedIn();
+            enableLoginSpinner(false);
+        })
+        .catch(error => {
+            console.log(error);
+            document.getElementById('loginStatus').innerText = "Login Failed";
+            enableLoginSpinner(false);
+        });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

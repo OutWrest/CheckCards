@@ -78,7 +78,6 @@ namespace CheckCards
             services.AddTransient<IEmailService, EmailService>();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IAServices, AServices>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

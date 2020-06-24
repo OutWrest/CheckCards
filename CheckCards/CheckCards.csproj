@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20200618004820_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200621004937_plsword.cs" />
     <Compile Remove="Migrations\20200621004937_plsword.Designer.cs" />
+    <Compile Remove="Migrations\20200621005130_newdb.cs" />
+    <Compile Remove="Migrations\20200621005130_newdb.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.4.1" />

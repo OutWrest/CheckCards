@@ -221,6 +221,12 @@ namespace CheckCards.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PasswordResetCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PasswordResetCodeDateTime")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("TwoFactorCode")
                         .HasColumnType("TEXT");
 

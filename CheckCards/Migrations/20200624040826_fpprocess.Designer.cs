@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheckCards.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200621005130_newdb")]
-    partial class newdb
+    [Migration("20200624040826_fpprocess")]
+    partial class fpprocess
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,12 @@ namespace CheckCards.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordResetCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PasswordResetCodeDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TwoFactorCode")

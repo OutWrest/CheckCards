@@ -9,5 +9,8 @@ namespace CheckCards.Data
         public string Name { get; set; }
         public string TwoFactorCode { get; set; }
         public DateTime TwoFactorCodeDateTime { get; set; }
+
+        public string PasswordResetCode { get; set; }
+        public DateTime PasswordResetCodeDateTime { get; set; }
     }
 }

@@ -25,6 +25,11 @@ namespace CheckCards.Services
             string message = $"Hello {user.Name}\nYour 2FA code is: {user.TwoFactorCode}";
             SendEmailAsync(user.Email, "Authentication code", message);
         }
+        public void EmailPasswordResetCode(ApplicationUser user)
+        {
+            string message = $"Hello {user.Name}\nClick the link below to reset your password:\n<a href=\"http://application.local:5000/ResetPassword/{user.PasswordResetCode}\">Reset Password</a>\nIf the above link doesnt work, visit /ResetPassword/{user.PasswordResetCode}";
+            SendEmailAsync(user.Email, "Password Reset Request", message);
+        }
         public Task SendEmailAsync(string recipient, string subject, string message)
         {
             using (MailMessage mailMessage = new MailMessage(configuration["Email:From"], recipient, subject, message))

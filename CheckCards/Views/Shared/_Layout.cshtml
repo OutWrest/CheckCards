@@ -71,6 +71,7 @@
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <input type="password" class="form-control" placeholder="Enter your password" id="loginPassword" />
+                            <button class="btn btn-link" id="login-forgotpassword" style="padding: inherit;">Forgot Password?</button>
                         </div>
                     </div>
                     <div class="form-group d-none" id="loginTwoFactorFormGroup">
@@ -80,6 +81,40 @@
                     <div id="loginSpinner" class="spinner-border text-primary d-none"></div>
                     <button id="loginButton" type="submit" class="btn btn-primary">Log In</button>
                     <button class="d-none btn-primary btn" id="confirmTwoFactorButton" type="submit">Verify SMS Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalForgotPassword">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Enter your credentials to reset your password.
+                    <span class="text-danger" id="resetPasswordStatus"></span>
+                </div>
+                <div class="modal-body">
+                    <div id="resetPasswordEmailNameContainer">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="text" class="form-control" placeholder="Enter your email" id="resetPasswordEmail" />
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" placeholder="Enter your username" id="resetPasswordUsername" />
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" placeholder="Enter your name" id="resetPasswordName" />
+                        </div>
+                    </div>
+                    <div class="form-group d-none" id="resetPasswordTwoFactorFormGroup">
+                        <label for="TwoFactorValue">Enter the six digit code from your email:</label>
+                        <input type="password" class="form-control" placeholder="Enter your code" id="resetPasswordTwoFactorValue" />
+                    </div>
+                    <div id="resetPasswordSpinner" class="spinner-border text-primary d-none"></div>
+                    <button id="resetPasswordButton" type="submit" class="btn btn-primary">Reset Password</button>
+                    <button class="d-none btn-primary btn" id="RPconfirmTwoFactorButton" type="submit">Verify SMS Code</button>
                 </div>
             </div>
         </div>
