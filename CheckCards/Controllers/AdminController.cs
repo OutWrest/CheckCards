@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CheckCards.Controllers
 {
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = AuthorizationRoles.Administrator)]
-    public class AdminControler : Controller
+    public class AdminController : Controller
     {
         public IActionResult Index()
         {

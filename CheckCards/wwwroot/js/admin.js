@@ -1,6 +1,5 @@
 window.addEventListener('load', function () {
-
-    myFetch('/api/v0.999/Admin', 'GET', true, data)
+    myFetch('/api/v0.999/Admin', 'GET', true, {})
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.status)
@@ -9,7 +8,7 @@ window.addEventListener('load', function () {
         })
         .then(data => {
             alert('yas');
-            console.log(data)
+            console.log(data.json())
         })
         .catch(error => {
             console.log(error);
