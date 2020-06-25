@@ -5,7 +5,44 @@
 <h1>@ViewData["Title"]</h1>
 <div class="text-danger" id="adminStatus"></div>
 
-
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Reset Password</th>
+            <th scope="col">Delete User</th>
+            <th scope="col">Save Changes</th>
+        </tr>
+    </thead>
+    <tbody id="usersTable">
+        <tr id="userTemplate">
+            <th scope="row" id="Number">0</th>
+            <td id="Id"></td>
+            <td id="UserName" contenteditable="true"></td>
+            <td id="Name" contenteditable="true"></td>
+            <td id="Email" contenteditable="true"></td>
+            <td id="resetPasswordContainer">
+                <a id="resetPassword" class="text-center savebtn">
+                    <img src="~/imgs/resetpassword.png" class="img-fluid" style="width:25px;" alt="Reset Password Icon" />
+                </a>
+            </td>
+            <td id="deleteUserContainer">
+                <a id="deleteUser" class="text-center savebtn">
+                    <img src="~/imgs/delete.svg" class="img-fluid" style="width:25px;" alt="Delete User Icon" />
+                </a>
+            </td>
+            <td id="saveChangesContainer">
+                <a id="saveChanges" class="text-center savebtn">
+                    <img src="~/imgs/save.svg" class="img-fluid" style="width:25px;" alt="Save Icon" />
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 
 

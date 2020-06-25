@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CheckCards.Data;
+using CheckCards.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace CheckCards.APIControllers
     {
         private SignInManager<ApplicationUser> signInManager;
         private UserManager<ApplicationUser> userManager;
+        private IAServices AServices;
 
-        public ResetPasswordController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public ResetPasswordController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IAServices AServices)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.AServices = AServices;
         }
 
         [HttpPost]
@@ -42,7 +45,7 @@ namespace CheckCards.APIControllers
                 }
             }
 
-            return new NotFoundResult();
+            return new UnauthorizedResult();
         }
     }
 

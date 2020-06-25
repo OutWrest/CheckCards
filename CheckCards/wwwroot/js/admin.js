@@ -1,31 +1,73 @@
 window.addEventListener('load', function () {
-    myFetch('/api/v0.999/Admin', 'GET', true, {})
+    var adminStatus = document.getElementById('adminStatus');
+
+    window.template = document.getElementById('userTemplate').cloneNode(1);
+
+    document.getElementById('usersTable').removeChild(document.getElementById('userTemplate'));
+
+    myFetch('/api/v0.999/Admin/getUsers', 'GET', true, {})
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.status)
             }
-            return response
+            return response.json()
         })
-        .then(data => {
-            alert('yas');
-            console.log(data.json())
+        .then(jsonData => {
+            createTable(jsonData)
+            //console.log(data.json())
         })
         .catch(error => {
             console.log(error);
-            registerStatus.innerText = "Failed to gather users";
+            adminStatus.innerText = "Failed to gather users";
             document.location.href = "#";
         });
 })
 
+function createRow(number, id, username, name, email) {
+    var table = document.getElementById('usersTable');
+    var userTemplate = window.template.cloneNode(1);
+
+    userTemplate.children.Number.innerHTML = number.toString();
+    userTemplate.children.Id.innerHTML = id;
+    userTemplate.children.UserName.innerHTML = username;
+    userTemplate.children.Name.innerHTML = name;
+    userTemplate.children.Email.innerHTML = email;
+
+    userTemplate.children.resetPasswordContainer.children.resetPassword.addEventListener("click", e => {
+        var adminStatus = document.getElementById('adminStatus');
+        adminStatus.innerText = "";
+
+        var _id = userTemplate.children.Id.innerHTML;
+        var _email = userTemplate.children.Email.innerHTML;
+        var _username = userTemplate.children.UserName.innerHTML;
+        var _name = userTemplate.children.Name.innerHTML;
+
+        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
+
+        console.log(data);
+    });
+
+    table.appendChild(userTemplate);
+}
+
+function createTable(jsonData) {
+    var i;
+    var user;
+    for (i = 0; i < jsonData.length; i++) {
+        user = jsonData[i];
+        console.log(user);
+        createRow(i, user.id, user.userName, user.name, user.email);
+    }
+}
 
 
-document.getElementById("registerButton").addEventListener("click", e => {
-    var registerStatus = document.getElementById('registerStatus');
-    registerStatus.innerText = "";
-    var name = document.getElementById("Name").value.trim();
-    var email = document.getElementById("email").value.trim();
-    var username = document.getElementById("username").value.trim();
-    var password = document.getElementById("password").value;
+// Button actions
+/*
+document.getElementById("resetPassword").addEventListener("click", e => {
+    var adminStatus = document.getElementById('adminStatus');
+    adminStatus.innerText = "";
+
+    
     var confirmPassword = document.getElementById("confirmPassword").value;
     if (password != confirmPassword) {
         registerStatus.innerText = "Password and Confirm Password Did Not Match";
@@ -33,19 +75,19 @@ document.getElementById("registerButton").addEventListener("click", e => {
     }
 
     data = { 'name': name, 'email': email, 'username': username, 'password': password };
-    myFetch('/api/v0.999/Register', 'PUT', false, data)
+    myFetch('/api/v0.999/Admin/resetPassword/' + id, 'PUT', false, data)
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.status);
             }
         })
         .then(data => {
-            alert('Registration was successful! Please log in.');
-            document.location.href = "/";
+            alert('Password reset was successful, email sent out to user.');
         })
         .catch(error => {
             console.log(error);
-            registerStatus.innerText = "Registration Failed";
+            adminStatus.innerText = "Failed to reset the password";
             document.location.href = "#";
         });
 });
+*/

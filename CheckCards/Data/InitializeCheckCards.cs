@@ -41,14 +41,29 @@ namespace CheckCards.Data
             {
                 UserName = "target",
                 Name = "name",
-                Email = "target@aol.com",
-                PasswordResetCode = "5959"
+                Email = "target@aol.com"
             };
 
             Tasks.Add(userManager.CreateAsync(user, "asd").ContinueWith(task =>
                 userManager.AddToRoleAsync(user, AuthorizationRoles.User)));
 
+            // Create an admin user
+
+            ApplicationUser admin = new ApplicationUser
+            {
+                UserName = "targetadmin",
+                Name = "admin",
+                Email = "target@admin.com"
+            };
+
+            Tasks.Add(userManager.CreateAsync(admin, "asda").ContinueWith(task =>
+                userManager.AddToRoleAsync(admin, AuthorizationRoles.Administrator)));
+
             Task.WaitAll(Tasks.ToArray());
+
+            Task.WaitAll(Tasks.ToArray());
+
+            var users = userManager.Users.ToList();
         }
     }
 }
