@@ -4,7 +4,7 @@
 
 <h1>@ViewData["Title"]</h1>
 <div class="text-danger" id="adminStatus"></div>
-
+<small><i>please note: you can edit by double clicking on the element you want to edit (with limitations)</i></small>
 <table class="table text-center">
     <thead>
         <tr>
@@ -43,7 +43,78 @@
         </tr>
     </tbody>
 </table>
+<div class="addUserContainer text-center justify-content-center">
+    <a data-toggle="modal" data-target="#addUserModal" class="btn AddUser" style="border: none; cursor: pointer;">
+        <img src="~/imgs/add.svg" style="width:45px;" alt="Add User Icon" />
+    </a>
+</div>
 
 
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Create your own user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="addUserContainer">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" placeholder="Email" id="addUserEmail" />
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" placeholder="Username" id="addUserUsername" />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" placeholder="Name" id="addUserName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Password:</label>
+                        <input type="password" class="form-control" placeholder="Password" id="addUserPassword" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="addUserSubmit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalForgotPassword">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Enter your credentials.
+                <span class="text-danger" id="resetPasswordStatus"></span>
+            </div>
+            <div class="modal-body">
+                <div id="resetPasswordEmailNameContainer">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" placeholder="Enter your email" id="resetPasswordEmail" />
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" placeholder="Enter your username" id="resetPasswordUsername" />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" placeholder="Enter your name" id="resetPasswordName" />
+                    </div>
+                </div>
+                <div id="resetPasswordSpinner" class="spinner-border text-primary d-none"></div>
+                <button id="resetPasswordButton" type="submit" class="btn btn-primary">Reset Password</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/js/admin.js"></script>

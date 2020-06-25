@@ -204,7 +204,45 @@ namespace CheckCards.APIControllers
 
             return new BadRequestObjectResult(res);
         }
-        
+
+        [HttpPut("[action]/{id?}")]
+        public async Task<ActionResult<ResponseStatusViewModel>> CreateUser(UserViewModel model, string id)
+        {
+            ResponseStatusViewModel res = new ResponseStatusViewModel();
+
+            Regex emailRegex = new Regex(@"^\S+@\S+\.\S+$");
+            var emailMatch = emailRegex.Match(model.Email);
+
+            if (!CheckResult(model.Id, model.Name, model.UserName, model.Email) && emailMatch.Success)
+            {
+                res.Result = false;
+                res.Message = Failed;
+
+                return new BadRequestObjectResult(res);
+            }
+
+            var user = new ApplicationUser()
+            {
+                Name = model.Name,
+                UserName = model.UserName,
+                Email = model.Email
+            };
+
+            var result = await userManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                res.Result = true;
+                res.Message = Succeeded;
+                return new OkObjectResult(res);
+            }
+
+            res.Result = false;
+            res.Message = Failed;
+
+            return new BadRequestObjectResult(res);
+        }
+
     }
     public class AdminResponseViewModel
     {

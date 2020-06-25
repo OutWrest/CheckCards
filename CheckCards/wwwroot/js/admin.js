@@ -21,6 +21,37 @@ window.addEventListener('load', function () {
             adminStatus.innerText = "Failed to gather users";
             document.location.href = "#";
         });
+
+    //addUserSubmit
+
+    var submit = document.getElementById("addUserSubmit");
+
+    submit.addEventListener("click", e => {
+        var email = document.getElementById("addUserEmail").value;
+        var username = document.getElementById("addUserUsername").value;
+        var name = document.getElementById("addUserName").value;
+        var password = document.getElementById("addUserPassword").value;
+
+        data = { 'id': password, 'email': email, 'username': username, 'name': name };
+
+        console.log(data);
+
+        myFetch('/api/v0.999/Admin/CreateUser', 'PUT', true, data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                alert('User successfully created');
+                location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Failed to create user');
+            });
+
+    });
 })
 
 function createRow(number, id, username, name, email) {
@@ -135,35 +166,3 @@ function createTable(jsonData) {
         createRow(i, user.id, user.userName, user.name, user.email);
     }
 }
-
-
-// Button actions
-/*
-document.getElementById("resetPassword").addEventListener("click", e => {
-    var adminStatus = document.getElementById('adminStatus');
-    adminStatus.innerText = "";
-
-    
-    var confirmPassword = document.getElementById("confirmPassword").value;
-    if (password != confirmPassword) {
-        registerStatus.innerText = "Password and Confirm Password Did Not Match";
-        return;
-    }
-
-    data = { 'name': name, 'email': email, 'username': username, 'password': password };
-    myFetch('/api/v0.999/Admin/resetPassword/' + id, 'PUT', false, data)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.status);
-            }
-        })
-        .then(data => {
-            alert('Password reset was successful, email sent out to user.');
-        })
-        .catch(error => {
-            console.log(error);
-            adminStatus.innerText = "Failed to reset the password";
-            document.location.href = "#";
-        });
-});
-*/
