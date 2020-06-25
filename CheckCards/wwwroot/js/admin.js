@@ -45,6 +45,82 @@ function createRow(number, id, username, name, email) {
         data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
 
         console.log(data);
+
+        myFetch('/api/v0.999/Admin/ResetPassword/' + _id, 'POST', true, data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                alert('Password reset was successful, email sent out to user.');
+                location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                adminStatus.innerText = "Failed to reset the password";
+                document.location.href = "#";
+            });
+    });
+
+    userTemplate.children.deleteUserContainer.children.deleteUser.addEventListener("click", e => {
+        var adminStatus = document.getElementById('adminStatus');
+        adminStatus.innerText = "";
+
+        var _id = userTemplate.children.Id.innerHTML;
+        var _email = userTemplate.children.Email.innerHTML;
+        var _username = userTemplate.children.UserName.innerHTML;
+        var _name = userTemplate.children.Name.innerHTML;
+
+        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
+
+        console.log(data);
+
+        myFetch('/api/v0.999/Admin/DeleteUser/' + _id, 'POST', true, data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                alert('User sucessfully deleted');
+                location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                adminStatus.innerText = "Failed to delete user";
+                document.location.href = "#";
+            });
+    });
+
+    userTemplate.children.saveChangesContainer.children.saveChanges.addEventListener("click", e => {
+        var adminStatus = document.getElementById('adminStatus');
+        adminStatus.innerText = "";
+
+        var _id = userTemplate.children.Id.innerHTML;
+        var _email = userTemplate.children.Email.innerHTML;
+        var _username = userTemplate.children.UserName.innerHTML;
+        var _name = userTemplate.children.Name.innerHTML;
+
+        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
+
+        console.log(data);
+
+        myFetch('/api/v0.999/Admin/SaveChanges/' + _id, 'POST', true, data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                alert('Changes successfully changed');
+                location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                adminStatus.innerText = "Failed to change user attributes";
+                document.location.href = "#";
+            });
     });
 
     table.appendChild(userTemplate);

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CheckCards.Data;
 using CheckCards.Models;
 using CheckCards.Models.ViewModels;
+using CheckCards.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,24 +22,42 @@ namespace CheckCards.APIControllers
     {
         private SignInManager<ApplicationUser> signInManager;
         private UserManager<ApplicationUser> userManager;
+        private IAServices AServices;
 
         private const string Failed = "Operation failed";
         private const string Succeeded = "Operation successful";
 
-        public AdminController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AdminController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IAServices AServices)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.AServices = AServices;
+    }
+        private bool CheckResult(string Id, string Name, string Username, string Email)
+        {
+            List<string> checkList = new List<string>
+            {
+                Id,
+                Name,
+                Username,
+                Email
+            };
+
+            foreach (string item in checkList)
+            {
+                if (string.IsNullOrWhiteSpace(item) && item.Length >= 3)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         [HttpGet]
         public ActionResult Get(string id)
         {
-            List<ApplicationUser> userslist = userManager.Users.ToList<ApplicationUser>();
-
-            AdminResponseViewModel res = new AdminResponseViewModel(userslist);
-
-            return Ok(res);
+            return Ok();
         }
 
         [HttpGet("[action]")]
@@ -58,6 +78,117 @@ namespace CheckCards.APIControllers
 
 
             return response;
+        }
+
+        [HttpPost("[action]/{id?}")]
+        public async Task<ActionResult<ResponseStatusViewModel>> SaveChanges(UserViewModel model, string id)
+        {
+            ResponseStatusViewModel res = new ResponseStatusViewModel();
+
+            Regex emailRegex = new Regex(@"^\S+@\S+\.\S+$");
+            var emailMatch = emailRegex.Match(model.Email); 
+
+            if (!CheckResult(model.Id, model.Name, model.UserName, model.Email) && emailMatch.Success && id.Equals(model.Id.Trim()))
+            {
+                res.Result = false;
+                res.Message = Failed;
+
+                return new BadRequestObjectResult(res);
+            }
+
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user != null)
+            {
+                user.Name = model.Name.Trim();
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+                var result = await userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    res.Result = true;
+                    res.Message = Succeeded;
+
+                    return new OkObjectResult(res);
+                }
+            }
+
+            res.Result = false;
+            res.Message = Failed;
+
+            return new BadRequestObjectResult(res);
+        }
+
+        [HttpPost("[action]/{id?}")]
+        public async Task<ActionResult<ResponseStatusViewModel>> ResetPassword(UserViewModel model, string id)
+        {
+            ResponseStatusViewModel res = new ResponseStatusViewModel();
+
+            Regex emailRegex = new Regex(@"^\S+@\S+\.\S+$");
+            var emailMatch = emailRegex.Match(model.Email);
+
+            if (!CheckResult(model.Id, model.Name, model.UserName, model.Email) && emailMatch.Success && id.Equals(model.Id.Trim()))
+            {
+                res.Result = false;
+                res.Message = Failed;
+
+                return new BadRequestObjectResult(res);
+            }
+
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user != null)
+            {
+                await AServices.SendPasswordResetAsync(user);
+                
+                res.Result = true;
+                res.Message = Succeeded;
+                return new OkObjectResult(res);
+            }
+
+            res.Result = false;
+            res.Message = Failed;
+
+            return new BadRequestObjectResult(res);
+        }
+
+        [HttpPost("[action]/{id?}")]
+        public async Task<ActionResult<ResponseStatusViewModel>> DeleteUser(UserViewModel model, string id)
+        {
+            ResponseStatusViewModel res = new ResponseStatusViewModel();
+
+            Regex emailRegex = new Regex(@"^\S+@\S+\.\S+$");
+            var emailMatch = emailRegex.Match(model.Email);
+
+            if (!CheckResult(model.Id, model.Name, model.UserName, model.Email) && emailMatch.Success && id.Equals(model.Id.Trim()))
+            {
+                res.Result = false;
+                res.Message = Failed;
+
+                return new BadRequestObjectResult(res);
+            }
+
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user != null)
+            {
+                var result = await userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    res.Result = true;
+                    res.Message = Succeeded;
+
+                    return new OkObjectResult(res);
+                }
+            }
+
+            res.Result = false;
+            res.Message = Failed;
+
+            return new BadRequestObjectResult(res);
         }
 
         [HttpPost("[action]/{id?}")]
