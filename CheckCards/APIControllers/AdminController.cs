@@ -232,9 +232,14 @@ namespace CheckCards.APIControllers
 
             if (result.Succeeded)
             {
-                res.Result = true;
-                res.Message = Succeeded;
-                return new OkObjectResult(res);
+                var result2 = await userManager.AddPasswordAsync(user, model.Id.Trim());
+
+                if (result2.Succeeded)
+                {
+                    res.Result = true;
+                    res.Message = Succeeded;
+                    return new OkObjectResult(res);
+                }
             }
 
             res.Result = false;

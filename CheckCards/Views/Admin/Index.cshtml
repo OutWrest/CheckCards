@@ -43,6 +43,7 @@
         </tr>
     </tbody>
 </table>
+
 <div class="addUserContainer text-center justify-content-center">
     <a data-toggle="modal" data-target="#addUserModal" class="btn AddUser" style="border: none; cursor: pointer;">
         <img src="~/imgs/add.svg" style="width:45px;" alt="Add User Icon" />
@@ -88,33 +89,14 @@
 </div>
 
 
-<div class="modal fade" id="modalForgotPassword">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Enter your credentials.
-                <span class="text-danger" id="resetPasswordStatus"></span>
-            </div>
-            <div class="modal-body">
-                <div id="resetPasswordEmailNameContainer">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="text" class="form-control" placeholder="Enter your email" id="resetPasswordEmail" />
-                    </div>
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" placeholder="Enter your username" id="resetPasswordUsername" />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" placeholder="Enter your name" id="resetPasswordName" />
-                    </div>
+<div class="modal fade" id="modalLoadingScreen">
+    <div class="modal-dialog" id="modalDocumentContainer" role="document">
+        <div class="modal-content loadContainer">
+            <div class="container-fluid loadContainer">
+                <div class="spinner align-middle middle">
                 </div>
-                <div id="resetPasswordSpinner" class="spinner-border text-primary d-none"></div>
-                <button id="resetPasswordButton" type="submit" class="btn btn-primary">Reset Password</button>
             </div>
         </div>
     </div>
 </div>
-
 <script src="~/js/admin.js"></script>

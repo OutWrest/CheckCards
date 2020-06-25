@@ -5,6 +5,34 @@ window.addEventListener('load', function () {
 
     document.getElementById('usersTable').removeChild(document.getElementById('userTemplate'));
 
+
+    $('#modalLoadingScreen').modal('show');
+    document.getElementById('modalDocumentContainer').classList.remove('modal-dialog'); // fixes dumb bootstrap error
+    document.getElementById('modalDocumentContainer').classList.add('loadContainer');
+
+    $('#modalLoadingScreen').on('shown.bs.modal', function (e) {
+        myFetch('/api/v0.999/Admin/getUsers', 'GET', true, {})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status)
+                }
+                return response.json()
+            })
+            .then(jsonData => {
+                $('#modalLoadingScreen').modal('hide');
+                createTable(jsonData)
+                //console.log(data.json())
+            })
+            .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
+                console.log(error);
+                adminStatus.innerText = "Failed to gather users";
+                document.location.href = "#";
+            });
+        $('#modalLoadingScreen').off('shown.bs.modal');
+    })
+
+    /*
     myFetch('/api/v0.999/Admin/getUsers', 'GET', true, {})
         .then(response => {
             if (!response.ok) {
@@ -13,14 +41,16 @@ window.addEventListener('load', function () {
             return response.json()
         })
         .then(jsonData => {
+            $('#modalLoadingScreen').modal('hide');
             createTable(jsonData)
             //console.log(data.json())
         })
         .catch(error => {
+            $('#modalLoadingScreen').modal('hide');
             console.log(error);
             adminStatus.innerText = "Failed to gather users";
             document.location.href = "#";
-        });
+        }); */
 
     //addUserSubmit
 
@@ -36,6 +66,7 @@ window.addEventListener('load', function () {
 
         console.log(data);
 
+        $('#modalLoadingScreen').modal('show');
         myFetch('/api/v0.999/Admin/CreateUser', 'PUT', true, data)
             .then(response => {
                 if (!response.ok) {
@@ -43,10 +74,12 @@ window.addEventListener('load', function () {
                 }
             })
             .then(data => {
+                $('#modalLoadingScreen').modal('hide');
                 alert('User successfully created');
                 location.reload();
             })
             .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
                 console.log(error);
                 alert('Failed to create user');
             });
@@ -77,6 +110,7 @@ function createRow(number, id, username, name, email) {
 
         console.log(data);
 
+        $('#modalLoadingScreen').modal('show');
         myFetch('/api/v0.999/Admin/ResetPassword/' + _id, 'POST', true, data)
             .then(response => {
                 if (!response.ok) {
@@ -84,10 +118,12 @@ function createRow(number, id, username, name, email) {
                 }
             })
             .then(data => {
+                $('#modalLoadingScreen').modal('hide');
                 alert('Password reset was successful, email sent out to user.');
                 location.reload();
             })
             .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
                 console.log(error);
                 adminStatus.innerText = "Failed to reset the password";
                 document.location.href = "#";
@@ -107,6 +143,7 @@ function createRow(number, id, username, name, email) {
 
         console.log(data);
 
+        $('#modalLoadingScreen').modal('show');
         myFetch('/api/v0.999/Admin/DeleteUser/' + _id, 'POST', true, data)
             .then(response => {
                 if (!response.ok) {
@@ -114,10 +151,12 @@ function createRow(number, id, username, name, email) {
                 }
             })
             .then(data => {
+                $('#modalLoadingScreen').modal('hide');
                 alert('User sucessfully deleted');
                 location.reload();
             })
             .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
                 console.log(error);
                 adminStatus.innerText = "Failed to delete user";
                 document.location.href = "#";
@@ -137,6 +176,7 @@ function createRow(number, id, username, name, email) {
 
         console.log(data);
 
+        $('#modalLoadingScreen').modal('show');
         myFetch('/api/v0.999/Admin/SaveChanges/' + _id, 'POST', true, data)
             .then(response => {
                 if (!response.ok) {
@@ -144,10 +184,12 @@ function createRow(number, id, username, name, email) {
                 }
             })
             .then(data => {
+                $('#modalLoadingScreen').modal('hide');
                 alert('Changes successfully changed');
                 location.reload();
             })
             .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
                 console.log(error);
                 adminStatus.innerText = "Failed to change user attributes";
                 document.location.href = "#";
