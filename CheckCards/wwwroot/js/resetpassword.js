@@ -21,11 +21,11 @@ document.getElementById("passwordButton").addEventListener("click", e => {
         .then(data => {
             alert('Password Reset was successful! Please log in.');
             console.log(data)
-            //document.location.href = "/";
+            document.location.href = "/";
         })
         .catch(error => {
             console.log(error);
             passwordStatus.innerText = "Password Reset Failed";
-            //document.location.href = "#";
+            document.location.href = "#";
         });
 });
