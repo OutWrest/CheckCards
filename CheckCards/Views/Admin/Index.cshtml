@@ -13,6 +13,7 @@
             <th scope="col">User Name</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
+            <th scope="col">Roles <br>User|Admin</th>
             <th scope="col">Reset Password</th>
             <th scope="col">Reset Questions</th>
             <th scope="col">Delete User</th>
@@ -26,6 +27,12 @@
             <td id="UserName" contenteditable="true"></td>
             <td id="Name" contenteditable="true"></td>
             <td id="Email" contenteditable="true"></td>
+            <td id="rolesContainer">
+                <a id="roles" class="text-center form-group">
+                    <input type="checkbox" id="User" name="user">
+                    <input type="checkbox" id="Admin" name="admin">
+                </a>
+            </td>
             <td id="resetPasswordContainer">
                 <a id="resetPassword" class="text-center savebtn">
                     <img src="~/imgs/resetpassword.png" class="img-fluid" style="width:25px;" alt="Reset Password Icon" />

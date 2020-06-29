@@ -65,7 +65,7 @@ window.addEventListener('load', function () {
     });
 })
 
-function createRow(number, id, username, name, email) {
+function createRow(number, id, username, name, email, roles) {
     var table = document.getElementById('usersTable');
     var userTemplate = window.template.cloneNode(1);
 
@@ -74,6 +74,15 @@ function createRow(number, id, username, name, email) {
     userTemplate.children.UserName.innerHTML = username;
     userTemplate.children.Name.innerHTML = name;
     userTemplate.children.Email.innerHTML = email;
+
+    if (roles.includes("User")) {
+        userTemplate.children.rolesContainer.children.roles.children.User.checked = true;
+    }
+
+    if (roles.includes("Administrator")) {
+        userTemplate.children.rolesContainer.children.roles.children.Admin.checked = true;
+    }
+    
 
     userTemplate.children.resetPasswordContainer.children.resetPassword.addEventListener("click", e => {
         var adminStatus = document.getElementById('adminStatus');
@@ -182,8 +191,18 @@ function createRow(number, id, username, name, email) {
         var _email = userTemplate.children.Email.innerHTML;
         var _username = userTemplate.children.UserName.innerHTML;
         var _name = userTemplate.children.Name.innerHTML;
+        var roles = []
 
-        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
+        if (userTemplate.children.rolesContainer.children.roles.children.User.checked) {
+            roles.push("User");
+        }
+
+        if (userTemplate.children.rolesContainer.children.roles.children.Admin.checked) {
+            roles.push("Administrator");
+        }
+
+
+        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name, 'roles': roles };
 
         console.log(data);
 
@@ -216,6 +235,6 @@ function createTable(jsonData) {
     for (i = 0; i < jsonData.length; i++) {
         user = jsonData[i];
         console.log(user);
-        createRow(i, user.id, user.userName, user.name, user.email);
+        createRow(i, user.id, user.userName, user.name, user.email, user.roles);
     }
 }

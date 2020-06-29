@@ -62,22 +62,23 @@ namespace CheckCards.APIControllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<UserViewModel> GetUsers()
+        public async Task<IEnumerable<UserViewModel>> GetUsersAsync()
         {
             List<UserViewModel> response = new List<UserViewModel>();
 
             foreach (var user in userManager.Users.ToList<ApplicationUser>())
             {
+                var roles = await userManager.GetRolesAsync(user);
+
                 response.Add(new UserViewModel
                 {
                     Id = user.Id.ToString(),
                     Name = user.Name,
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Roles = roles
                 });
             }
-
-
             return response;
         }
 
@@ -105,9 +106,16 @@ namespace CheckCards.APIControllers
                 user.UserName = model.UserName;
                 user.Email = model.Email;
 
-                var result = await userManager.UpdateAsync(user);
 
-                if (result.Succeeded)
+                IList<string> currentRoles = await userManager.GetRolesAsync(user);
+                
+                var res1 = await userManager.RemoveFromRolesAsync(user, currentRoles);
+
+                var res2 = await userManager.AddToRolesAsync(user, model.Roles);
+                
+                var res3 = await userManager.UpdateAsync(user);
+
+                if (res1.Succeeded && res2.Succeeded && res3.Succeeded)
                 {
                     res.Result = true;
                     res.Message = Succeeded;
@@ -115,7 +123,6 @@ namespace CheckCards.APIControllers
                     return new OkObjectResult(res);
                 }
             }
-
             res.Result = false;
             res.Message = Failed;
 
@@ -288,22 +295,5 @@ namespace CheckCards.APIControllers
             return new BadRequestObjectResult(res);
         }
 
-    }
-    public class AdminResponseViewModel
-    {
-        public List<List<String>> Users { get; set; }
-
-        public AdminResponseViewModel(List<ApplicationUser> AUsers)
-        {
-            Users = new List<List<String>>();
-            foreach (ApplicationUser user in AUsers)
-            {
-                Users.Add(new List<String> {
-                    user.UserName,
-                    user.Name,
-                    user.Email
-                });
-            }
-        }
     }
 }
