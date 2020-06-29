@@ -85,7 +85,7 @@ namespace CheckCards.APIControllers
                 return new BadRequestObjectResult(res);
             }
 
-            await userManager.AddToRoleAsync(user, AuthorizationRoles.Administrator);
+            await userManager.AddToRoleAsync(user, AuthorizationRoles.User);
 
             res.Result = true;
             res.Message = Succeeded;
