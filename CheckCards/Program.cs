@@ -21,13 +21,19 @@ namespace CheckCards
             using (IServiceScope scope = host.Services.CreateScope())
             {
                 IServiceProvider services = scope.ServiceProvider;
-                InitializeCheckCards.ResetDatabase(
-                    services.GetRequiredService<ApplicationDbContext>(),
-                    services.GetRequiredService<UserManager<ApplicationUser>>(),
-                    services.GetRequiredService<RoleManager<IdentityRole>>());
+                Task t = init(services);
+                Task.WaitAll(new Task[] { t });
             }
 
             host.Run();
+        }
+
+        public async static Task init(IServiceProvider services)
+        {
+            await InitializeCheckCards.ResetDatabase(
+                    services.GetRequiredService<ApplicationDbContext>(),
+                    services.GetRequiredService<UserManager<ApplicationUser>>(),
+                    services.GetRequiredService<RoleManager<IdentityRole>>());
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
