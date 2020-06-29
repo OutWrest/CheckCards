@@ -1,4 +1,4 @@
-# Burps R Suite
+# CheckCards
 
 CheckCards is a test application made to explore vulnerabilities on [ASP.NET](https://dotnet.microsoft.com/apps/aspnet) web applications. The application is made to use [ASP.NET](https://dotnet.microsoft.com/apps/aspnet) Web API and [JWT](https://jwt.io/) for authorization. Because many web applications today use these types of setups, this application's main purpose is to analyze common problems that may show up. 
 
