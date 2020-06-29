@@ -156,6 +156,45 @@ namespace CheckCards.APIControllers
         }
 
         [HttpPost("[action]/{id?}")]
+        public async Task<ActionResult<ResponseStatusViewModel>> ResetQuestions(UserViewModel model, string id)
+        {
+            ResponseStatusViewModel res = new ResponseStatusViewModel();
+
+            Regex emailRegex = new Regex(@"^\S+@\S+\.\S+$");
+            var emailMatch = emailRegex.Match(model.Email);
+
+            if (!CheckResult(model.Id, model.Name, model.UserName, model.Email) && emailMatch.Success && id.Equals(model.Id.Trim()))
+            {
+                res.Result = false;
+                res.Message = Failed;
+
+                return new BadRequestObjectResult(res);
+            }
+
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user != null)
+            {
+                user.Answer1 = "";
+                user.Answer2 = "";
+
+                var result = await userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    res.Result = true;
+                    res.Message = Succeeded;
+                    return new OkObjectResult(res);
+                }
+            }
+
+            res.Result = false;
+            res.Message = Failed;
+
+            return new BadRequestObjectResult(res);
+        }
+
+        [HttpPost("[action]/{id?}")]
         public async Task<ActionResult<ResponseStatusViewModel>> DeleteUser(UserViewModel model, string id)
         {
             ResponseStatusViewModel res = new ResponseStatusViewModel();

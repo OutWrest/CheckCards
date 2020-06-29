@@ -32,28 +32,6 @@ window.addEventListener('load', function () {
         $('#modalLoadingScreen').off('shown.bs.modal');
     })
 
-    /*
-    myFetch('/api/v0.999/Admin/getUsers', 'GET', true, {})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.status)
-            }
-            return response.json()
-        })
-        .then(jsonData => {
-            $('#modalLoadingScreen').modal('hide');
-            createTable(jsonData)
-            //console.log(data.json())
-        })
-        .catch(error => {
-            $('#modalLoadingScreen').modal('hide');
-            console.log(error);
-            adminStatus.innerText = "Failed to gather users";
-            document.location.href = "#";
-        }); */
-
-    //addUserSubmit
-
     var submit = document.getElementById("addUserSubmit");
 
     submit.addEventListener("click", e => {
@@ -126,6 +104,39 @@ function createRow(number, id, username, name, email) {
                 $('#modalLoadingScreen').modal('hide');
                 console.log(error);
                 adminStatus.innerText = "Failed to reset the password";
+                document.location.href = "#";
+            });
+    });
+
+    userTemplate.children.resetQuestionsContainer.children.resetQuestions.addEventListener("click", e => {
+        var adminStatus = document.getElementById('adminStatus');
+        adminStatus.innerText = "";
+
+        var _id = userTemplate.children.Id.innerHTML;
+        var _email = userTemplate.children.Email.innerHTML;
+        var _username = userTemplate.children.UserName.innerHTML;
+        var _name = userTemplate.children.Name.innerHTML;
+
+        data = { 'id': _id, 'email': _email, 'username': _username, 'name': _name };
+
+        console.log(data);
+
+        $('#modalLoadingScreen').modal('show');
+        myFetch('/api/v0.999/Admin/ResetQuestions/' + _id, 'POST', true, data)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .then(data => {
+                $('#modalLoadingScreen').modal('hide');
+                alert('Security questions were successfully reset');
+                location.reload();
+            })
+            .catch(error => {
+                $('#modalLoadingScreen').modal('hide');
+                console.log(error);
+                adminStatus.innerText = "Failed to reset the security questions";
                 document.location.href = "#";
             });
     });

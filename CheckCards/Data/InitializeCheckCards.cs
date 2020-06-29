@@ -53,13 +53,18 @@ namespace CheckCards.Data
             {
                 UserName = "targetadmin",
                 Name = "admin",
-                Email = "target@admin.com"
+                Email = "asd@6mails.com",
+                TwoFactorEnabled = true
             };
 
             Tasks.Add(userManager.CreateAsync(admin, "asda").ContinueWith(task =>
                 userManager.AddToRoleAsync(admin, AuthorizationRoles.Administrator)));
 
             Task.WaitAll(Tasks.ToArray());
+
+            Task.WaitAll(Tasks.ToArray());
+
+            Tasks.Add(userManager.AddToRoleAsync(admin, AuthorizationRoles.Administrator));
 
             Task.WaitAll(Tasks.ToArray());
 
