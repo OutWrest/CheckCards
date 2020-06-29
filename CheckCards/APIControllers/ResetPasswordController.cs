@@ -33,18 +33,27 @@ namespace CheckCards.APIControllers
                 return new UnauthorizedResult();
             }
 
+
+
             foreach (var user in userManager.Users.ToList())
             {
                 if (user.PasswordResetCode.Equals(id.Trim()))
                 {
+
+                    TimeSpan codeTimeSpan = DateTime.Now - user.PasswordResetCodeDateTime;
+                    if (codeTimeSpan <= TimeSpan.FromMinutes(5))
+                    {
+                        user.TwoFactorCode = "";
+                    }
+
                     await userManager.RemovePasswordAsync(user);
                     await userManager.AddPasswordAsync(user, model.NewPassword);
+                    var result = await userManager.UpdateAsync(user);
 
-
-                    return new OkResult();
+                    if (result.Succeeded)
+                        return new OkResult();
                 }
             }
-
             return new UnauthorizedResult();
         }
     }
