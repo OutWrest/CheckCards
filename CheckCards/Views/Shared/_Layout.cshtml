@@ -115,6 +115,32 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalSetupSecurityQuestions">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Setup Security Questions.
+                    <span class="text-danger" id="setupSecurityQuestionsStatus"></span>
+                </div>
+                <div class="modal-body">
+                    <div id="setupSecurityQuestionsContainer">
+                        <div class="form-group">
+                            <label for="question1">What is your SSN?:</label>
+                            <input type="text" class="form-control" placeholder="Enter your SSN#" id="answer1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Interpret this image:</label>
+                            <img src="~/imgs/ink.png" alt="Ink blob" class="img-fluid text-center" />
+                            <input type="text" class="form-control" placeholder="What do you see in the picture" id="answer2" />
+                        </div>
+                    </div>
+                    <div id="setupSecurityQuestionsSpinner" class="spinner-border text-primary d-none"></div>
+                    <button id="setupSecurityQuestionsButton" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

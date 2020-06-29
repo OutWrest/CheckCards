@@ -17,5 +17,15 @@ namespace CheckCards.Data
 
         public string PasswordResetCode { get; set; }
         public DateTime PasswordResetCodeDateTime { get; set; }
+
+        public bool VerifyAnswers(string answer1, string answer2)
+        {
+            return Answer1.Trim().ToLower() == answer1.Trim().ToLower() && Answer2.Trim().ToLower() == answer2.Trim().ToLower();
+        }
+
+        public bool HasAnswers()
+        {
+            return !string.IsNullOrEmpty(Answer1) && !string.IsNullOrEmpty(Answer2);
+        }
     }
 }

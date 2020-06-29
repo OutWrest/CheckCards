@@ -205,11 +205,59 @@ document.getElementById("resetPasswordButton").addEventListener("click", e => {
 });
 
 
+/* Security Questions */
 
+$(function () {
+    // On load check for if user is logged in and make request to check to see if they have security questions set up
+    var jwt = sessionStorage.getItem('jwt');
+    if (jwt != null && jwt !== '') {
+        myFetch('/api/v0.999/Internal', 'GET', true)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .catch(exception => { return; }); 
 
+        myFetch('/api/v0.999/SecurityQuestions', 'GET', true)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+            })
+            .catch(exception => { $('#modalSetupSecurityQuestions').modal('show'); }); 
+    }
+});
 
+// Set up security Questions
 
+document.getElementById("setupSecurityQuestionsButton").addEventListener("click", e => {
+    document.getElementById('setupSecurityQuestionsStatus').innerText = "";
+    enableLoginSpinner(true);
 
+    var answer1 = document.getElementById("answer1").value;
+    var answer2 = document.getElementById("answer2").value;
+
+    data = { 'Answer1': answer1, 'Answer2': answer2};
+    myFetch('/api/v0.999/SecurityQuestions/SetupSecurityQuestions', 'POST', true, data)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+        })
+        .then(data => {
+            document.getElementById('setupSecurityQuestionsStatus').className = "text-success";
+            document.getElementById('setupSecurityQuestionsStatus').innerText = "Process successful";
+            enableLoginSpinner(false);
+            $('#modalSetupSecurityQuestions').modal('hide');
+        })
+        .catch(error => {
+            console.log(error);
+            document.getElementById('setupSecurityQuestionsStatus').className = "text-danger";
+            document.getElementById('setupSecurityQuestionsStatus').innerText = "Error setting up security questions";
+            enableLoginSpinner(false);
+        });
+});
 
 
 
