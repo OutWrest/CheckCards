@@ -18,31 +18,32 @@ namespace CheckCards.Data
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public async static void ResetDatabase(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public async static Task ResetDatabase(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             Random random = new Random();
 
             // Deletes all past users and roles from previous session
 
-            List<Task> Tasks = new List<Task>();
+            //List<Task> Tasks = new List<Task>();
             foreach (ApplicationUser user_to_be_deleted in context.Users)
             {
-                Tasks.Add(userManager.DeleteAsync(user_to_be_deleted));
+                await userManager.DeleteAsync(user_to_be_deleted);
 
             }
 
             foreach (IdentityRole role_to_be_deleted in roleManager.Roles.ToList())
             {
-                Tasks.Add(roleManager.DeleteAsync(role_to_be_deleted));
+                await roleManager.DeleteAsync(role_to_be_deleted);
             }
 
-            Task.WaitAll(Tasks.ToArray());
+            //Task.WaitAll(Tasks.ToArray());
+            //Tasks.Clear();
 
             // Create Roles
 
             foreach (string role in AuthorizationRoles.AllRoles)
             {
-                Tasks.Add(roleManager.CreateAsync(new IdentityRole(role)));
+                await roleManager.CreateAsync(new IdentityRole(role));
             }
 
             // Create a normal user
@@ -54,11 +55,11 @@ namespace CheckCards.Data
                 Email = "user@6mails.com",
                 TwoFactorEnabled = true
             };
+            //Task.WaitAll(Tasks.ToArray());
+            //Tasks.Clear();
 
-            Tasks.Add(userManager.CreateAsync(user, "asd").ContinueWith(task =>
-                userManager.AddToRoleAsync(user, AuthorizationRoles.User)));
-
-            Task.WaitAll(Tasks.ToArray());
+            await userManager.CreateAsync(user, "asd");
+            await userManager.AddToRoleAsync(await userManager.FindByNameAsync(user.UserName), AuthorizationRoles.User);            
 
             // Create a secure user 
 
@@ -72,8 +73,10 @@ namespace CheckCards.Data
                 TwoFactorEnabled = true
             };
 
-            Tasks.Add(userManager.CreateAsync(user2, RandomString(5)).ContinueWith(task =>
-                userManager.AddToRoleAsync(user2, AuthorizationRoles.User)));
+            await userManager.CreateAsync(user2, RandomString(5));
+            await userManager.AddToRoleAsync(await userManager.FindByNameAsync(user2.UserName), AuthorizationRoles.User);
+            
+            
 
             // Create an admin user
 
@@ -87,8 +90,9 @@ namespace CheckCards.Data
                 TwoFactorEnabled = true
             };
 
-            Tasks.Add(userManager.CreateAsync(admin, "asd").ContinueWith(task =>
-                userManager.AddToRoleAsync(admin, AuthorizationRoles.Administrator)));
+            await userManager.CreateAsync(admin, "asd");            
+            await userManager.AddToRoleAsync(await userManager.FindByEmailAsync(admin.Email), AuthorizationRoles.Administrator);
+
 
             // Create a secure admin user
 
@@ -102,20 +106,8 @@ namespace CheckCards.Data
                 TwoFactorEnabled = true
             };
 
-            Tasks.Add(userManager.CreateAsync(admin2, RandomString(5)).ContinueWith(task =>
-                userManager.AddToRoleAsync(admin2, AuthorizationRoles.Administrator)));
-
-            Task.WaitAll(Tasks.ToArray());
-
-            Task.WaitAll(Tasks.ToArray());
-
-            Tasks.Add(userManager.CreateAsync(admin, "asd").ContinueWith(task =>
-                userManager.AddToRoleAsync(admin, AuthorizationRoles.Administrator)));
-
-            Tasks.Add(userManager.CreateAsync(admin2, RandomString(5)).ContinueWith(task =>
-                userManager.AddToRoleAsync(admin2, AuthorizationRoles.Administrator)));
-
-            Task.WaitAll(Tasks.ToArray());
+            await userManager.CreateAsync(admin2, RandomString(5));
+            await userManager.AddToRoleAsync(await userManager.FindByNameAsync(admin2.UserName), AuthorizationRoles.Administrator);                                
 
             var users = userManager.Users.ToList();
         }
