@@ -115,14 +115,9 @@ document.getElementById("loginButton").addEventListener("click", e => {
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.status);
-                //return response.json();
             }
         })
         .then(data => {
-            //sessionStorage.setItem('jwt', data.token);            
-            //document.location.href = '/';
-            //isLoggedIn();
-            //$('#modalLogin').modal('hide');
             document.getElementById('loginButton').classList.add('d-none');
             document.getElementById('confirmTwoFactorButton').classList.remove('d-none');
             document.getElementById('loginUsernamePasswordContainer').classList.add('d-none');
@@ -146,7 +141,6 @@ document.getElementById("confirmTwoFactorButton").addEventListener("click", e =>
     myFetch('/api/v0.999/MultiFactor', 'POST', false, data)
         .then(response => {
             if (response.ok) {
-
                 return response.json();
             }
             else
@@ -154,17 +148,30 @@ document.getElementById("confirmTwoFactorButton").addEventListener("click", e =>
             throw new Error(response.status);
         })
         .then(data => {
-            sessionStorage.setItem('jwt', data.token);
-            document.location.href = '/';
-            isLoggedIn();
-            //$('#modalLogin').modal('hide');
-            //document.getElementById('loginButton').classList.remove('d-none');
-            //document.getElementById('confirmTwoFactorButton').classList.add('d-none');
-            //document.getElementById('loginUsernamePasswordContainer').classList.remove('d-none');
-            //document.getElementById('loginTwoFactorFormGroup').classList.add('d-none');
-            enableLoginSpinner(false);
+            if (data.hasOwnProperty('token')) {
+                sessionStorage.setItem('jwt', data.token);
+                document.location.href = '/';
+                isLoggedIn();
+            }
+            else {
+                document.getElementById('confirmTwoFactorButton').classList.add('d-none');
+                document.getElementById('loginTwoFactorFormGroup').classList.add('d-none');
+
+                document.getElementById('securityQuestionButton').classList.remove('d-none');
+                document.getElementById('securityQuestionFormGroup').classList.remove('d-none');
+                enableLoginSpinner(false);
+            }
         })
         .catch(error => {
+            if (error.message.includes("JSON")) {
+                document.getElementById('confirmTwoFactorButton').classList.add('d-none');
+                document.getElementById('loginTwoFactorFormGroup').classList.add('d-none');
+
+                document.getElementById('securityQuestionButton').classList.remove('d-none');
+                document.getElementById('securityQuestionFormGroup').classList.remove('d-none');
+                enableLoginSpinner(false);
+                return;
+            }
             console.log(error);
             document.getElementById('loginStatus').innerText = "Login Failed";
             enableLoginSpinner(false);
@@ -259,6 +266,39 @@ document.getElementById("setupSecurityQuestionsButton").addEventListener("click"
         });
 });
 
+// Answer security Questions
+
+document.getElementById("securityQuestionButton").addEventListener("click", e => {
+    document.getElementById('loginStatus').innerText = "";
+    enableLoginSpinner(true);
+
+    var username = document.getElementById("loginUsername").value;
+    var password = document.getElementById("loginPassword").value;
+    var code = document.getElementById('loginTwoFactorValue').value;
+    var answer1 = document.getElementById('loginAnswer1').value;
+    var answer2 = document.getElementById('loginAnswer2').value;
+
+    data = { 'username': username, 'password': password, 'MultiFactorValue': code, 'Answer1': answer1, 'Answer2': answer2 };
+    myFetch('/api/v0.999/SecurityQuestions', 'POST', false, data)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            else
+                enableLoginSpinner(false);
+            throw new Error(response.status);
+        })
+        .then(data => {
+            sessionStorage.setItem('jwt', data.token);
+            document.location.href = '/';
+            isLoggedIn();
+        })
+        .catch(error => {
+            console.log(error);
+            document.getElementById('loginStatus').innerText = "Security questions verification Failed";
+            enableLoginSpinner(false);
+        });
+});
 
 
 

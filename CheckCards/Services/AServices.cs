@@ -48,6 +48,21 @@ namespace CheckCards.Services
             }
             return false;
         }
+        public bool ValidateTwoFactorCode2Async(ApplicationUser user, string code)
+        {
+            if (user.TwoFactorEnabled && user.TwoFactorCodeDateTime != null && !string.IsNullOrEmpty(user.TwoFactorCode))
+            {
+                TimeSpan codeTimeSpan = DateTime.Now - user.TwoFactorCodeDateTime;
+                if (codeTimeSpan <= TimeSpan.FromMinutes(5))
+                {
+                    if (code == user.TwoFactorCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         public async Task SendPasswordResetAsync(ApplicationUser user)
         {

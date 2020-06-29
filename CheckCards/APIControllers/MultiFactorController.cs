@@ -45,8 +45,13 @@ namespace CheckCards.APIControllers
                 var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                 if (result.Succeeded)
                 {
-                    if (AServices.ValidateTwoFactorCodeAsync(user, model.MultiFactorValue))
+                    if (AServices.ValidateTwoFactorCode2Async(user, model.MultiFactorValue))
                     {
+                        if (user.HasAnswers())
+                        {
+                            return new OkResult();
+                        }
+
                         IList<string> roles = await userManager.GetRolesAsync(user);
                         string role = "";
                         if (roles.Contains("Administrator"))
