@@ -79,7 +79,7 @@ namespace CheckCards.APIControllers
 
             if (!result.Succeeded)
             {
-                res.Result = false;
+                res.Result = false;  
                 res.Message = Failed;
 
                 return new BadRequestObjectResult(res);

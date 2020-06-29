@@ -7,6 +7,11 @@ namespace CheckCards.Data
     {
         [PersonalData]
         public string Name { get; set; }
+
+        [PersonalData]
+        public string Answer1 { get; set; }
+        [PersonalData]
+        public string Answer2 { get; set; }
         public string TwoFactorCode { get; set; }
         public DateTime TwoFactorCodeDateTime { get; set; }
 

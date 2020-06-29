@@ -28,7 +28,7 @@ namespace CheckCards.Controllers
 
             foreach (var user in userManager.Users.ToList())
             {
-                if (user.PasswordResetCode.Equals(id.Trim())) 
+                if (user.PasswordResetCode != null && user.PasswordResetCode.Equals(id.Trim())) 
                 {
                     ViewBag.id = id;
                     return View();

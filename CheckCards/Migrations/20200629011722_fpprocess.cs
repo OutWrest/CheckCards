@@ -42,6 +42,8 @@ namespace CheckCards.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    Answer1 = table.Column<string>(nullable: true),
+                    Answer2 = table.Column<string>(nullable: true),
                     TwoFactorCode = table.Column<string>(nullable: true),
                     TwoFactorCodeDateTime = table.Column<DateTime>(nullable: true),
                     PasswordResetCode = table.Column<string>(nullable: true),

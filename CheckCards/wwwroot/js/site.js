@@ -44,17 +44,38 @@ async function isLoggedIn() {
 
 }
 
+async function isAdmin() {
+    var jwt = sessionStorage.getItem('jwt');
+    if (jwt != null && jwt !== '') {
+        myFetch('/api/v0.999/Admin', 'GET', true)
+            .then(response => { setAdmin(response.ok); showHideBasedOnLogin() })
+            .catch(exception => { setAdmin(false); showHideBasedOnLogin() });
+    }
+    else {
+        setAdmin(false);
+        showHideBasedOnLogin();
+    }
+
+}
 
 function showHideBasedOnLogin() {
     if (loggedIn) {
         document.querySelectorAll(".hide-loggedin").forEach(box => { box.classList.add('d-none') });
         document.querySelectorAll(".show-loggedin").forEach(box => { box.classList.remove('d-none') });
+        if (Admin) {
+            document.querySelectorAll(".admin").forEach(box => { box.classList.remove('d-none') });
+        }
+        else {
+            document.querySelectorAll(".admin").forEach(box => { box.classList.add('d-none') });
+        }
     }
     else {
         document.querySelectorAll(".hide-loggedin").forEach(box => { box.classList.remove('d-none') });
         document.querySelectorAll(".show-loggedin").forEach(box => { box.classList.add('d-none') });
+        document.querySelectorAll("admin").forEach(box => { box.classList.Add('d-none') });
     }
 }
+
 
 var ready = (callback) => {
     if (document.readyState != "loading") callback();
@@ -63,9 +84,13 @@ var ready = (callback) => {
 
 function setLoggedIn(result) { loggedIn = result; }
 
+function setAdmin(result) { Admin = result; }
+
 var loggedIn = false;
+var Admin = false;
 
 ready(() => {
+    isAdmin();
     isLoggedIn();
 });
 

@@ -218,6 +218,12 @@ namespace CheckCards.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("Answer1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Answer2")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 

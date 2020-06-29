@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheckCards.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200624040826_fpprocess")]
+    [Migration("20200629011722_fpprocess")]
     partial class fpprocess
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,6 +219,12 @@ namespace CheckCards.Migrations
             modelBuilder.Entity("CheckCards.Data.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Answer1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Answer2")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");

@@ -17,7 +17,7 @@ namespace CheckCards.APIControllers
 {
     [Route("/api/v0.999/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = AuthorizationRoles.Administrator)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = AuthorizationRoles.Administrator)]
     public class AdminController : ControllerBase
     {
         private SignInManager<ApplicationUser> signInManager;
@@ -55,8 +55,9 @@ namespace CheckCards.APIControllers
         }
 
         [HttpGet]
-        public ActionResult Get(string id)
+        public ActionResult Get()
         {
+            string name = this.HttpContext.User.Identity.Name;
             return Ok();
         }
 
