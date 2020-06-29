@@ -39,13 +39,3 @@ There are pre-made test accounts to try out:
 **random lowercase letters (length = 5)*
 
 *All emails can be access thru the [temp-mail.org](https://temp-mail.org/en) service, to access a specific email for testing, click on [change](https://temp-mail.org/en/change) and make sure you write the exact the email and select the correct domain*
-
-## Known Issues
-
-#### Failure to load users
-
-There is a small chance that only some of the users will be created in a new session. It has something to do with the threads and I have no idea how to fix it.
-
-#### Fix (also, not really)
-
-Restart session and pray.
