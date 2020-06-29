@@ -40,7 +40,7 @@ namespace CheckCards.APIControllers
             var id = User.Claims.ToList<Claim>()[0].Value;
 
             var user = await userManager.FindByIdAsync(id);
-
+ 
             if (user != null)
             {
                 if (user.HasAnswers())
